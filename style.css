@@ -1,0 +1,33 @@
+.divjoueur1{
+    height: 100%;
+    width: 100%;
+}
+
+.divjoueur2{
+    
+    height: 100%;
+    width: 100%;
+}
+
+main{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: 100%;
+}
+
+body{
+    height: 100%;
+    margin: 0;
+}
+
+html{
+    height: 100%;
+}
+
+.text{
+    position: absolute;
+    margin-left: 45%;
+    margin-right: 45%;
+    width: 10%;
+}
