@@ -277,6 +277,9 @@ class Game{
                 if(fix){
                     this.statutsjoueur(player1,player2,tour,false,true)
                 }
+                else{
+                    fix=true
+                }
             }
         })
     
