@@ -263,9 +263,12 @@ class Game{
                 if(player1.getround()==0){
                     fix=false
                 }
-                tour = this.hold(player1,tour)
                 if(fix){
+                    tour = this.hold(player1,tour)
                     this.statutsjoueur(player1,player2,tour,false,true)
+                }
+                else{
+                    fix=true
                 }
             }
             else{
@@ -273,8 +276,8 @@ class Game{
                 if(player2.getround()==0){
                     fix=false
                 }
-                tour = this.hold(player2,tour)
                 if(fix){
+                    tour = this.hold(player2,tour)
                     this.statutsjoueur(player1,player2,tour,false,true)
                 }
                 else{
