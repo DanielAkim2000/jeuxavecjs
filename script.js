@@ -1,12 +1,10 @@
 $(document).ready(() =>{
     $('.newgame').click(() => {
-        choix = choixnewgame() 
-        if( choix === "o" || choix === "O"){
+        choix = confirm("Voulez vous commencer une nouvelle partie OK pour OUI et Annuler pour NON")
+        if( choix){
             let player = $('.player')
             name1 = prompt("Nom du joueur numéro 1","<Entrez le nom du joueur 1>")
-            player[0].textContent = `${name1}`
             name2 = prompt("Nom du joueur numéro 2","<Entrez le nom du joueur 2>")
-            player[1].textContent = `${name2}`
             let player1 = new Player(name1)
             let player2 = new Player(name2)
             let game1 = new Game()
@@ -51,16 +49,6 @@ class Player
     }
 }
 
-function choixnewgame(){
-    choix = prompt("Voulez vous commencer une nouvelle partie O pour oui et N pour non")
-    if( choix === "O" || choix === "o" || choix === "N" || choix === "n"){
-        return choix
-    }
-    else{
-        return choixnewgame()
-    } 
-}
-
 function getnumber(){
     aleatoire = Math.random()
     num = Math.floor(aleatoire*7)
@@ -73,26 +61,12 @@ function getnumber(){
     }
 }
 
-function wantcontinue(){
-    choix = prompt("Veux tu continuer? O or N")
-    if(choix == "O" || choix == "o"){
-        return 1
-    }
-    else if(choix === "y" || choix === "Y") {
-        return 0
-    }
-    else{
-        return wantcontinue()
-    }
-}
-
-
-class Game
-{
+class Game{
     constructor(){
         this.gagnant=null;
-        this.nbtour = 0;
+
     }
+
     afficheResultDe(player,num){
         console.log(player.name+" a eu "+num)
     }
@@ -225,12 +199,12 @@ class Game
                 let ajoutdiv = document.getElementById(id)
                 let pasajoutdiv = document.getElementById(id1)
                 if(tour){
-                    pasajoutdiv.innerHTML = `${player2.name}`
-                    ajoutdiv.innerHTML = `<div class="col-10 container-fluid">${player1.name}</div><div class='col-2 modif'><div class ='encours'> </div></div>`
+                    pasajoutdiv.innerHTML = `${player2.name.toUpperCase()}`
+                    ajoutdiv.innerHTML = `<div class="col-10 container-fluid">${player1.name.toUpperCase()}</div><div class='col-2 modif'><div class ='encours'> </div></div>`
                 } 
                 else{
-                    pasajoutdiv.innerHTML = `${player1.name}`
-                    ajoutdiv.innerHTML = `<div class="col-10 container-fluid">${player2.name}</div><div class='col-2 modif'><div class ='encours'> </div></div>`
+                    pasajoutdiv.innerHTML = `${player1.name.toUpperCase()}`
+                    ajoutdiv.innerHTML = `<div class="col-10 container-fluid">${player2.name.toUpperCase()}</div><div class='col-2 modif'><div class ='encours'> </div></div>`
                 }
             }
         }, 1500);
@@ -247,23 +221,15 @@ class Game
                 let ajoutdiv = document.getElementById(id)
                 let pasajoutdiv = document.getElementById(id1)
                 if(tour){
-                    pasajoutdiv.innerHTML = `${player2.name}`
-                    ajoutdiv.innerHTML = `<div class="col-10 container-fluid">${player1.name}</div><div class='col-2 modif'><div class ='encours'> </div></div>`
+                    pasajoutdiv.innerHTML = `${player2.name.toUpperCase()}`
+                    ajoutdiv.innerHTML = `<div class="col-10 container-fluid">${player1.name.toUpperCase()}</div><div class='col-2 modif'><div class ='encours'> </div></div>`
                 }
                 else{
-                    pasajoutdiv.innerHTML = `${player1.name}`
-                    ajoutdiv.innerHTML = `<div class="col-10 container-fluid">${player2.name}</div><div class='col-2 modif'><div class ='encours'> </div></div>`
+                    pasajoutdiv.innerHTML = `${player1.name.toUpperCase()}`
+                    ajoutdiv.innerHTML = `<div class="col-10 container-fluid">${player2.name.toUpperCase()}</div><div class='col-2 modif'><div class ='encours'> </div></div>`
                 }
             }
         }, 500);
-    }
-    
-    afficheNbTours(){
-        console.log("tour numero:"+this.nbtour)
-    }
-
-    nbtourInc(){
-        return this.nbtour++
     }
 
     checkGagnant(player){
@@ -276,39 +242,44 @@ class Game
     }
 
     partie(player1,player2,tour){
-        this.afficheNbTours()
+
         roll[0].addEventListener('click',() => {
+
             if(tour){
-                
+
                 tour = this.tour(player1,tour)
                 this.statutsjoueur(player1,player2,tour,true,false)
             }
             else
             {
-                
+
                 tour = this.tour(player2,tour)
                 this.statutsjoueur(player1,player2,tour,true,false)
             }
         })
         hold[0].addEventListener('click',() =>{
             if(tour){
-                
+                let fix=true
+                if(player1.getround()==0){
+                    fix=false
+                }
                 tour = this.hold(player1,tour)
-                this.statutsjoueur(player1,player2,tour,false,true)
+                if(fix){
+                    this.statutsjoueur(player1,player2,tour,false,true)
+                }
             }
             else{
-                
+                let fix=true
+                if(player2.getround()==0){
+                    fix=false
+                }
                 tour = this.hold(player2,tour)
-                this.statutsjoueur(player1,player2,tour,false,true)
+                if(fix){
+                    this.statutsjoueur(player1,player2,tour,false,true)
+                }
             }
         })
-        if(this.getGagnant()!= null){
-            return 
-        }
-        this.nbtourInc()
-        //if(!this.checkGagnant(player1) && !this.checkGagnant(player2)){
-            //this.partie(player1,player2)
-        //}
+    
     }
 
     getGagnant(){
@@ -320,18 +291,79 @@ class Game
     }
 
     finpartie(player){
-        player.setnewGlobal(player.getround())
-        console.log("Le vainqueur de la partie est: "+player.name+" avec "+ player.getglobal +" points")
-        this.setGagnant(player)
+        setTimeout(() => {
+            player.setnewGlobal(player.getround())
+            alert("Le vainqueur de la partie est: "+player.name+" avec "+ player.getglobal() +" points")
+            this.setGagnant(player)
+            setTimeout(() => {
+                location.reload()
+            }, 2000);
+        }, 1600);
     }
 
 }
 
 function tourneDe(num) {
     const de = document.getElementById("de");
-    de.style.animation = "roll 2s ease";
+    de.style.animation = "roll 1.6s ease";
     setTimeout(() => {
-        de.textContent = num;
+        de.innerHTML = affichede(num)
         de.style.animation = "none";
     }, 1500);
+}
+
+function affichede(valeur){
+    switch(valeur){
+        case 1 : return '<div class="shadow-lg point">  </div>';
+        case 2 : return `<div class="row row-cols-2 h-100 align-items-center w-100 m-0">
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        </div>`;
+        case 3 : return `<div class="row row-cols-3 h-100 align-items-center w-100 m-0">
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        </div>`;
+        case 4 : return `<div class="row row-cols-3 h-100 align-items-center w-100 m-0">
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        </div>`;
+        case 5 : return `<div class="row row-cols-3 h-100 align-items-center w-100 m-0">
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        </div>`;
+        case 6 : return `<div class="row row-cols-3 h-100 align-items-center w-100 m-0">
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        <div class="col p-0"></div>
+        <div class="col p-0"><div class="shadow-lg point">  </div></div>
+        </div>`;
+    }
 }
