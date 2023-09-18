@@ -222,11 +222,11 @@ class Game{
                 let pasajoutdiv = document.getElementById(id1)
                 if(tour){
                     pasajoutdiv.innerHTML = `${player2.name.toUpperCase()}`
-                    ajoutdiv.innerHTML = `<div class="col-10 container-fluid">${player1.name.toUpperCase()}</div><div class='col-2 modif'><div class ='encours'> </div></div>`
+                    ajoutdiv.innerHTML = `<div class="col-10 container-fluid">${player1.name.toUpperCase()}</div><div class='col-2 modif'><div class ='encours pl-1'> </div></div>`
                 }
                 else{
                     pasajoutdiv.innerHTML = `${player1.name.toUpperCase()}`
-                    ajoutdiv.innerHTML = `<div class="col-10 container-fluid">${player2.name.toUpperCase()}</div><div class='col-2 modif'><div class ='encours'> </div></div>`
+                    ajoutdiv.innerHTML = `<div class="col-10 container-fluid">${player2.name.toUpperCase()}</div><div class='col-2 modif'><div class ='encours pl-1'> </div></div>`
                 }
             }
         }, 500);
