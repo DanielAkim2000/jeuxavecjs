@@ -175,7 +175,6 @@ class Game{
                 }
                 let divcourante = document.getElementById(id)
                 let divnoncourante = document.getElementById(id1)
-                let name = document.getElementById(idd)
                 divcourante.style.backgroundColor = "whitesmoke"
                 divnoncourante.style.backgroundColor = "white"
             }
@@ -242,19 +241,24 @@ class Game{
     }
 
     partie(player1,player2,tour){
-
+        let verrouillage = false
         roll[0].addEventListener('click',() => {
-
-            if(tour){
+            if(!verrouillage){
+                verrouillage = true
+                if(tour){
 
                 tour = this.tour(player1,tour)
                 this.statutsjoueur(player1,player2,tour,true,false)
-            }
-            else
-            {
-
-                tour = this.tour(player2,tour)
-                this.statutsjoueur(player1,player2,tour,true,false)
+                }
+                else
+                {
+                    
+                    tour = this.tour(player2,tour)
+                    this.statutsjoueur(player1,player2,tour,true,false)
+                }
+                setTimeout(() => {
+                    verrouillage = false
+                }, 1500);
             }
         })
         hold[0].addEventListener('click',() =>{

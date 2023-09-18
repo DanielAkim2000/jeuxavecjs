@@ -42,9 +42,10 @@ html{
 
 .current{
     background-color: #e32400;
-    height: 13vh;
+    height: 6rem;
     width: 10rem;
     min-width: auto;
+    min-height: auto;
     
 }
 
@@ -132,11 +133,4 @@ html{
     width: 10px;
     height: 10px;
     margin: auto;
-}
-
-.deux{
-    background-color: #e32400;
-    border-radius: 50%;
-    width: 10px;
-    height: 10px;
-}
+};
