@@ -3,8 +3,8 @@ $(document).ready(() =>{
         choix = confirm("Voulez vous commencer une nouvelle partie OK pour OUI et Annuler pour NON")
         if( choix){
             let player = $('.player')
-            name1 = prompt("Nom du joueur numéro 1","<Entrez le nom du joueur 1>")
-            name2 = prompt("Nom du joueur numéro 2","<Entrez le nom du joueur 2>")
+            name1 = prompt("Nom du joueur numéro 1")
+            name2 = prompt("Nom du joueur numéro 2")
             let player1 = new Player(name1)
             let player2 = new Player(name2)
             let game1 = new Game()
