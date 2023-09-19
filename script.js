@@ -32,10 +32,10 @@ $(document).ready(() =>{
     $('.info').click(()=>{
         alert(`Règles :
         Le jeu comprend 2 joueurs .
-        Chaque joueur possède un score temporaire en ROUGE et un score CURRENT.
+        Chaque joueur possède un score temporaire dans le rectangle ROUGE et un score GLOBAl.
         À chaque tour, le joueur peut lancer un dé autant de fois qu'il le souhaite. Le résultat d’un lancer est ajouté au score temporaire.
         Lors de son tour, le joueur peut décider à tout moment de:
-        - Cliquer sur l’option “HOLD”, qui permet d’envoyer les points du score temporaire vers le score CURRENT. Ce sera alors le tour de l’autre joueur.
+        - Cliquer sur l’option “HOLD”, qui permet d’envoyer les points du score temporaire vers le score GLOBAL. Ce sera alors le tour de l’autre joueur.
         - S’il obtient un 1, son score temporaire est perdu et c’est la fin de son tour.
         Le premier joueur qui atteint les 100 points sur global gagne le jeu.
         BONNE CHANCE!!!
