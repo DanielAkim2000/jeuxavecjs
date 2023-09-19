@@ -1,5 +1,9 @@
 $(document).ready(() =>{
+    $('.divjoueur1').hide()
+    $('.divjoueur2').hide()
+    $('.afaire').hide()
     $('.newgame').click(() => {
+        $('.newgame').hide()
         choix = confirm("Voulez vous commencer une nouvelle partie OK pour OUI et Annuler pour NON")
         if( choix){
             let player = $('.player')
@@ -9,8 +13,14 @@ $(document).ready(() =>{
             let player2 = new Player(name2)
             let game1 = new Game()
             let tour = true
-            game1.afficheJoueurEnCours(player1,tour,false,true)
             game1.statutsjoueur(player1,player2,tour,false,true)
+            $('.divjoueur1').show(1500)
+            $('.divjoueur2').show(1500)
+            $('.newgame').show(1500)
+            $('.afaire').show(1500)
+            setTimeout(()=>{
+                game1.afficheJoueurEnCours(player1,tour,false,true)
+            },1000)
             game1.partie(player1,player2,tour)
         }
 
