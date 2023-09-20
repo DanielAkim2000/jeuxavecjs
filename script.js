@@ -1,31 +1,60 @@
+let hold = document.getElementsByClassName("hold")
+let roll = document.getElementsByClassName("roll")
+
 $(document).ready(() =>{
     $('.divjoueur1').hide()
     $('.divjoueur2').hide()
     $('.afaire').hide()
+    let playerarray = new Array()
+    let game = new Array()
+    let tour = true
+    let player = $('.player')
+    let i = -1
+    let a = -2
+    let b = -1
     $('.newgame').click(() => {
+        if(i>=0){
+            choix2 = confirm('Voulez vous mettre fin à la partie?')
+            if(choix2){
+                max = Math.max(playerarray[a].calculpendantmatch() , playerarray[b].calculpendantmatch() )
+                if(playerarray[a].calculpendantmatch() == max)
+                {
+                    game[i].finpartie(playerarray[a],true)
+                }
+                else{
+                    game[i].finpartie(playerarray[b],true)
+                }
+            } 
+        }
         choix = confirm("Voulez vous commencer une nouvelle partie OK pour OUI et Annuler pour NON")
         if( choix){
+            i++
+            a+=2
+            b+=2
             $('.divjoueur1').hide()
             $('.divjoueur2').hide()
             $('.afaire').hide()
             $('.newgame').hide()
-            let player = $('.player')
             name1 = prompt("Nom du joueur numéro 1")
             name2 = prompt("Nom du joueur numéro 2")
-            let player1 = new Player(name1)
-            let player2 = new Player(name2)
-            let game1 = new Game()
-            let tour = true
-            game1.statutsjoueur(player1,player2,tour,false,true)
+            playerarray[a] = new Player(name1)
+            playerarray[b] = new Player(name2)
+            tour = true
+            game[i] = new Game(false)
+            game[i].statutsjoueur(playerarray[a],playerarray[b],tour,false,true)
             $('.divjoueur1').show(1500)
             $('.divjoueur2').show(1500)
             $('.newgame').html('<i class="fa-regular fa-circle-plus fa  p-0" style="color: #e32400;margin-right: 2%;"></i>')
             $('.newgame').show(1500)
             $('.afaire').show(1500)
+            game[i].afficheGbobal(playerarray[a],tour)
+            game[i].afficheGbobal(playerarray[b],!tour)
+            game[i].afficheRoundActu(playerarray[a],tour,true,false)
+            game[i].afficheRoundActu(playerarray[b],!tour,true,false)
             setTimeout(()=>{
-                game1.afficheJoueurEnCours(player1,tour,false,true)
+                game[i].afficheJoueurEnCours(playerarray[a],tour,false,true)
             },1000)
-            game1.partie(player1,player2,tour)
+            game[i].partie(playerarray[a],playerarray[b],tour)
         }
 
     })
@@ -41,10 +70,7 @@ $(document).ready(() =>{
         BONNE CHANCE!!!
         `)
     })
-});
 
-let hold = document.getElementsByClassName("hold")
-let roll = document.getElementsByClassName("roll")
 
 class Player
 {
@@ -70,6 +96,12 @@ class Player
     resetround(){
         this.round=0;
     }
+    resetGlobal(){
+        this.global = 0 
+    }
+    setName(name){
+        this.name = name
+    }
     calculpendantmatch(){
         return this.global + this.round
     }
@@ -88,9 +120,8 @@ function getnumber(){
 }
 
 class Game{
-    constructor(){
-        this.gagnant=null;
-
+    constructor(bool){
+        this.gagnant= bool
     }
 
     afficheResultDe(player,num){
@@ -136,36 +167,41 @@ class Game{
     }
 
     tour(player,tour){
-        var number=getnumber()
-        tourneDe(number)
-        this.afficheResultDe(player,number,tour)
-        if(number === 1){
-            player.resetround()
-            this.afficheGbobal(player,tour)
-            this.afficheRoundActu(player,tour,false,true)
-            this.afficheJoueurEnCours(player,!tour,true)
-            return !tour
-        }
-        if(number != 1){
-            player.setnewRound(number)
-            this.afficheRoundActu(player,tour)
-            if(this.checkGagnant(player))
-            {
-                this.finpartie(player);
+        if(!this.gagnant){
+            var number=getnumber()
+            tourneDe(number)
+            this.afficheResultDe(player,number,tour)
+            if(number === 1){
+                player.resetround()
+                this.afficheGbobal(player,tour)
+                this.afficheRoundActu(player,tour,false,true)
+                this.afficheJoueurEnCours(player,!tour,true)
+                return !tour
             }
-            return tour
+            if(number != 1){
+                player.setnewRound(number)
+                this.afficheRoundActu(player,tour)
+                if(this.checkGagnant(player))
+                {
+                    this.finpartie(player,false)
+                    this.gagnant = true
+                }
+                return tour
+            }
         }
     }
 
     hold(player,tour){
-        if(player.getround()!=0){
-            player.setnewGlobal(player.getround())
-            player.resetround()
-            this.afficheGbobal(player,tour)
-            this.afficheRoundActu(player,tour,true,false)
-            this.afficheJoueurEnCours(player,!tour,false,true)
-            return !tour
-        }
+        if(!this.gagnant){
+            if(player.getround()!=0){
+                player.setnewGlobal(player.getround())
+                player.resetround()
+                this.afficheGbobal(player,tour)
+                this.afficheRoundActu(player,tour,true,false)
+                this.afficheJoueurEnCours(player,!tour,false,true)
+                return !tour
+            }
+        } 
     }
 
     afficheJoueurEnCours(player,tour,roll,hold){
@@ -268,34 +304,16 @@ class Game{
 
     partie(player1,player2,tour){
         let verrouillage = false
-        roll[0].addEventListener('click',() => {
-            if(!verrouillage){
-                verrouillage = true
-                if(tour){
-
-                tour = this.tour(player1,tour)
-                this.statutsjoueur(player1,player2,tour,true,false)
-                }
-                else
-                {
-                    
-                    tour = this.tour(player2,tour)
-                    this.statutsjoueur(player1,player2,tour,true,false)
-                }
-                setTimeout(() => {
-                    verrouillage = false
-                }, 1500);
-            }
-        })
-        hold[0].addEventListener('click',() =>{
+        const gestionnaireClicHold = () => {
             if(tour){
                 let fix=true
                 if(player1.getround()==0){
                     fix=false
                 }
-                if(fix){
+                if(fix && player1!=null){
                     tour = this.hold(player1,tour)
                     this.statutsjoueur(player1,player2,tour,false,true)
+                    
                 }
                 else{
                     fix=true
@@ -306,7 +324,7 @@ class Game{
                 if(player2.getround()==0){
                     fix=false
                 }
-                if(fix){
+                if(fix && player2!=null){
                     tour = this.hold(player2,tour)
                     this.statutsjoueur(player1,player2,tour,false,true)
                 }
@@ -314,30 +332,64 @@ class Game{
                     fix=true
                 }
             }
-        })
-    
+        }
+        const gestionnaireClicRoll = () => {
+            if(!verrouillage){
+                verrouillage = true
+                if(tour && player1!=null){
+                    
+                    tour = this.tour(player1,tour)
+                    this.statutsjoueur(player1,player2,tour,true,false)
+                }
+                else if(player2!=null)
+                {
+                    
+                    tour = this.tour(player2,tour)
+                    this.statutsjoueur(player1,player2,tour,true,false)
+                
+                }
+                setTimeout(() => {
+                    verrouillage = false
+                }, 1500)
+            }
+        }
+        if(!this.getGagnant()){
+            roll[0].addEventListener('click', gestionnaireClicRoll)
+            hold[0].addEventListener('click', gestionnaireClicHold)
+            console.log(this.getGagnant())
+        }
+        else{
+            roll[0].removeEventListener('click', gestionnaireClicRoll)
+            hold[0].removeEventListener('click', gestionnaireClicHold)
+            console.log('event supp')
+        }
     }
 
     getGagnant(){
         return this.gagnant
     }
-
-    setGagnant(player){
-        this.gagnant = player
+    
+    setGagnant(bool){
+        this.gagnant = bool
     }
 
-    finpartie(player){
-        setTimeout(() => {
+    finpartie(player,bool){
+        if(bool == false ){
+            setTimeout(() => {
+                player.setnewGlobal(player.getround())
+                alert("Le vainqueur de la partie est: "+player.name+" avec "+ player.getglobal() +" points")
+                this.setGagnant(true)
+            }, 1600) 
+        }
+        else{
             player.setnewGlobal(player.getround())
             alert("Le vainqueur de la partie est: "+player.name+" avec "+ player.getglobal() +" points")
-            this.setGagnant(player)
-            setTimeout(() => {
-                location.reload()
-            }, 2000);
-        }, 1600);
+            this.setGagnant(true)
+        }
     }
 
 }
+
 
 function tourneDe(num) {
     const de = document.getElementById("de");
@@ -403,3 +455,4 @@ function affichede(valeur){
         </div>`;
     }
 }
+})
