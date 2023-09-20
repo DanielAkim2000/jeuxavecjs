@@ -20,16 +20,17 @@ body{
     height: 100%;
     margin: 0;
     background-color: white;
-    font-family: "https://fonts.google.com/specimen/Lato";
+    font-family: 'Lato',sans-serif;
 }
 
 h1,h2,h3,h4,h5,h6{
-    font-family: 'Lato', serif;
+    font-family: 'Lato', sans-serif;
     font-weight: normal;
 }
 
 html{
     height: 100%;
+    font-family: 'Lato',sans-serif;
 }
 
 .text{

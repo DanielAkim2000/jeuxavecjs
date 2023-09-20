@@ -31,6 +31,7 @@ $(document).ready(() =>{
             i++
             a+=2
             b+=2
+            tour = true 
             $('.divjoueur1').hide()
             $('.divjoueur2').hide()
             $('.afaire').hide()
