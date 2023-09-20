@@ -44,7 +44,7 @@ $(document).ready(() =>{
             game[i].statutsjoueur(playerarray[a],playerarray[b],tour,false,true)
             $('.divjoueur1').show(1500)
             $('.divjoueur2').show(1500)
-            $('.newgame').html('<i class="fa-regular fa-circle-plus fa  p-0" style="color: #e32400;margin-right: 2%;"></i>')
+            $('.newgame').html('<i class="fa-solid fa-circle-plus fa  p-0" style="color: #e32400;margin-right: 2%;"></i>')
             $('.newgame').show(1500)
             $('.afaire').show(1500)
             game[i].afficheGbobal(playerarray[a],tour)
