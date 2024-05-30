@@ -101,6 +101,7 @@ html{
     flex-direction: row;
     justify-content: center;
     align-items:baseline;
+    cursor: pointer;
 }
 
 .roll{
@@ -109,6 +110,7 @@ html{
     flex-direction: row;
     justify-content: center;
     align-items:baseline;
+    cursor: pointer;
 }
 
 .newgame{
